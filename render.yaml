@@ -1,0 +1,32 @@
+# Render Blueprint — FOOTBALL CINEMATIC AI
+# Deploys the Express + FFmpeg backend as a Docker web service.
+#
+# Usage:
+#   Render Dashboard -> New -> Blueprint -> connect this repo.
+#   Render reads this file and provisions the service automatically.
+#
+# The six rendering routes (/api/upload-video, /api/test-render-1..3,
+# /api/render-full-cinematic, /api/render-progress) are served by this app,
+# alongside the AI routes (/api/analyze-video, /api/qc-review,
+# /api/analyze-reference, /api/generate-veo-shot, /api/video-status,
+# /api/video-download) and /api/presets.
+
+services:
+  - type: web
+    name: fotbal-1
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      # Set your Gemini key in the Render dashboard (Secret) — do NOT commit it.
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: APP_URL
+        sync: false
